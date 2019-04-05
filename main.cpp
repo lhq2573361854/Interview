@@ -8,5 +8,6 @@ int main(){
     sort->print();
     sort->insertSort();
     sort->print();
+    cout <<"12312"<<endl;
     return 0;
 }
