@@ -13,8 +13,14 @@ private:
     int* arr;
     int n;
 public:
+    int count;
+    int* data;
     Sort(){
-
+    }
+    Sort(int n){
+        this->n = n;
+        this->count = n;
+        data = new int[n+1];
     }
     void  selectSort();
     void bulletSort();
@@ -25,6 +31,12 @@ public:
     void mergeSort(int l, int r);
     void _mergeSort(int* arr,int l,int mid, int r);
     void heapSort();
+    void _siftup(int index);
+    void _siftDown(int index);
+    void _parent(int index);
+    void _left(int index);
+    void _right( int index);
+    int extractMax();
     int getWidth();
     void print();
     void setWidth(int n);
@@ -48,8 +60,9 @@ void Sort::setArr( int* arr ){
 int* Sort::_getRandom(){
     int* arr =new int[n];
     srand(time(NULL));
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i){
         arr[i]= rand()%n;
+        data[i+1] = arr[i];
     }
     return arr;
 }
@@ -60,6 +73,7 @@ void Sort::insertSort() {
         }
     }
 }
+
 void Sort::selectSort() {
     for (int i = 0; i < n; ++i) {
         int temp = i;
@@ -79,7 +93,9 @@ void Sort::bulletSort() {
         swap(arr[i],arr[temp]);
     }
 }
+
 void Sort::quickSort(){
+    srand(time(NULL));
     _quickSort(0,n-1,arr);
 }
 void Sort::_quickSort(int l , int r,int* arr){
@@ -105,6 +121,7 @@ void Sort::_quickSort(int l , int r,int* arr){
     _quickSort(l,lt-1,arr);
     _quickSort(gt,r,arr);
 }
+
 void Sort::mergeSort(){
     mergeSort(0,n-1);
 }
@@ -138,6 +155,40 @@ void Sort::_mergeSort(int* arr,int l, int mid, int r) {
     }
 
 }
+void Sort::_siftup(int index) {
+    while(index > 1 && data[index/2] < data[index] ){
+        swap( data[index/2], data[index] );
+        index/=2;
+    }
+}
+void Sort::_siftDown(int index) {
+    while(2*index <= count ){
+        int j = 2* index;
+        if(j+1 <= count && data[j+1]> data[j])
+            j++;
+        if(data[j] <= data[index] ) break;
+        swap( data[index] , data[j] );
+        index = j;
+    }
+}
+int Sort::extractMax(){
+    assert( count > 0 );
+    int ret = data[1];
+    swap( data[1] , data[count] );
+    count--;
+    _siftDown(1);
+    return ret;
+}
+void Sort::heapSort() {
+    for( int i = count/2 ; i >= 1 ; i -- )
+        _siftDown(i);
+
+    for( int i = n-1 ; i >= 0 ; i-- ){
+        arr[i] = extractMax();
+    }
+}
+
+
 void Sort::print() {
     for (int i = 0; i < n; ++i) {
         cout << arr[i]<< " ";
