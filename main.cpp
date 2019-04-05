@@ -1,13 +1,13 @@
 #include<bits/stdc++.h>
 #include"stdsort.h"
+#include <windows.h>
 using namespace std;
 int main(){
     Sort* sort = new Sort();
-    sort->setWidth(10);
+    sort->setWidth(2000);
     sort->setArr(sort->_getRandom());
     sort->print();
-    sort->insertSort();
+    sort->quickSort();
     sort->print();
-    cout <<"12312"<<endl;
     return 0;
 }
