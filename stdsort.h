@@ -40,7 +40,7 @@ public:
     int getWidth();
     void print();
     void setWidth(int n);
-    int *_getRandom();
+    void _getRandom();
     int* getArr();
     void setArr(int *arr);
 };
@@ -57,14 +57,14 @@ int* Sort::getArr(){
 void Sort::setArr( int* arr ){
     this->arr = arr;
 }
-int* Sort::_getRandom(){
-    int* arr =new int[n];
+void  Sort::_getRandom(){
+    arr =new int[n];
     srand(time(NULL));
     for (int i = 0; i < n; ++i){
         arr[i]= rand()%n;
         data[i+1] = arr[i];
     }
-    return arr;
+
 }
 void Sort::insertSort() {
     for (int i = 0; i < n; ++i) {
@@ -73,7 +73,6 @@ void Sort::insertSort() {
         }
     }
 }
-
 void Sort::selectSort() {
     for (int i = 0; i < n; ++i) {
         int temp = i;
@@ -93,16 +92,13 @@ void Sort::bulletSort() {
         swap(arr[i],arr[temp]);
     }
 }
-
 void Sort::quickSort(){
     srand(time(NULL));
     _quickSort(0,n-1,arr);
 }
 void Sort::_quickSort(int l , int r,int* arr){
-    if(r -l <= 15){
-        insertSort();
+    if(l >= r)
         return ;
-    }
     swap( arr[l], arr[rand()%(r-l+1)+l ] );
     int lt = l;
     int gt = r+1;
@@ -117,16 +113,13 @@ void Sort::_quickSort(int l , int r,int* arr){
             i++;
     }
     swap(arr[lt],arr[l]);
-
     _quickSort(l,lt-1,arr);
     _quickSort(gt,r,arr);
 }
-
 void Sort::mergeSort(){
     mergeSort(0,n-1);
 }
 void Sort::mergeSort( int l, int r) {
-    // 对于小规模数组, 使用插入排序
     if( r - l <= 15 ){
         insertSort();
         return;
@@ -187,12 +180,13 @@ void Sort::heapSort() {
         arr[i] = extractMax();
     }
 }
-
-
 void Sort::print() {
     for (int i = 0; i < n; ++i) {
         cout << arr[i]<< " ";
     }
     cout <<endl;
 }
+
+
+
 #endif //INDEX2_STDSORT_H
