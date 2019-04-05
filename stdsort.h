@@ -22,27 +22,32 @@ public:
         this->count = n;
         data = new int[n+1];
     }
+	//选择排序
     void  selectSort();
-    void bulletSort();
-    void insertSort();
+    //冒泡排序
+	void bulletSort();
+    //插入排序
+	void insertSort();
+	//三路快排
     void  quickSort();
     void  _quickSort(int l , int r,int* arr);
+	//归并排序
     void mergeSort();
     void mergeSort(int l, int r);
     void _mergeSort(int* arr,int l,int mid, int r);
+	//堆排序
     void heapSort();
     void _siftup(int index);
     void _siftDown(int index);
-    void _parent(int index);
-    void _left(int index);
-    void _right( int index);
     int extractMax();
+	//相当于javaBean
     int getWidth();
-    void print();
     void setWidth(int n);
     void _getRandom();
     int* getArr();
     void setArr(int *arr);
+	//toString方法
+	void print();
 };
 
 int  Sort::getWidth(){
