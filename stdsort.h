@@ -28,6 +28,8 @@ public:
 	void bulletSort();
     //插入排序
 	void insertSort();
+	//希尔排序
+    void shellSort();
 	//三路快排
     void  quickSort();
     void  _quickSort(int l , int r,int* arr);
@@ -35,6 +37,7 @@ public:
     void mergeSort();
     void mergeSort(int l, int r);
     void _mergeSort(int* arr,int l,int mid, int r);
+    void mergeSortBU();
 	//堆排序
     void heapSort();
     void _siftup(int index);
@@ -72,10 +75,12 @@ void  Sort::_getRandom(){
 
 }
 void Sort::insertSort() {
-    for (int i = 0; i < n; ++i) {
-        for (int j = i; j > 0 && arr[j] < arr[j-1] ; --j) {
-            swap(arr[j],arr[j-1]);
-        }
+    for( int i = 1 ; i < n ; i ++ ){
+        int  e = arr[i];
+        int j;
+        for( j = i ; j > 0 && e < arr[j-1] ; j-- )
+            arr[j] = arr[j-1];
+        arr[j] = e;
     }
 }
 void Sort::selectSort() {
@@ -97,6 +102,21 @@ void Sort::bulletSort() {
         swap(arr[i],arr[temp]);
     }
 }
+void Sort::shellSort(){
+    int h = 1;
+    while(3*h < n) h = h*3+1;
+    while(h >= 1){
+        for( int i = h ; i < n ; i ++ ){
+            int  e = arr[i];
+            int j;
+            for( j = i ; j >= h && e < arr[j-h] ; j -= h )
+                arr[j] = arr[j-h];
+            arr[j] = e;
+        }
+        h /= 3;
+    }
+}
+
 void Sort::quickSort(){
     srand(time(NULL));
     _quickSort(0,n-1,arr);
@@ -141,18 +161,34 @@ void Sort::_mergeSort(int* arr,int l, int mid, int r) {
         aux[i-l] = arr[i];
     int i = l;
     int j = mid+1;
-    for (int k = 0; k <= r; ++k) {
-     if(i > j)
-         arr[k]=aux[j++];
-     else if(j > r)
-         arr[k]= aux[i++];
-     if(aux[i] < aux[j] )
-         arr[k]=aux[i++];
-     else if(aux[i] < aux[j])
-         arr[k] = aux[j++];
+    for (int k = l; k <= r; ++k) {
+        if(i > mid){
+            arr[k]=aux[j-l];
+            j++;
+        }else if(j > r){
+            arr[k] = aux[i-l];
+            i ++;
+        }else if(aux[i-l] < aux[j-l] ){
+            arr[k]=aux[i-l];
+            i++;
+        }
+        else{
+            arr[k] = aux[j-l];
+            j++;
+        }
     }
 
 }
+
+void Sort::mergeSortBU(){
+    for (int sz = 1; sz <= n; sz += sz){
+        for (int i = 0; i + sz < n; i += sz + sz ){
+            _mergeSort(arr, i, i + sz - 1, min(i + sz + sz -1, n - 1));
+        }
+    }
+}
+
+
 void Sort::_siftup(int index) {
     while(index > 1 && data[index/2] < data[index] ){
         swap( data[index/2], data[index] );
@@ -185,6 +221,9 @@ void Sort::heapSort() {
         arr[i] = extractMax();
     }
 }
+
+
+
 void Sort::print() {
     for (int i = 0; i < n; ++i) {
         cout << arr[i]<< " ";
