@@ -1,16 +1,16 @@
 #include<bits/stdc++.h>
 #include"stdsort.h"
 #include <windows.h>
+#include "BSTree.h"
 using namespace std;
 int main(){
-    Sort* sort = new Sort(100);
-    sort->_getRandom();
-    sort->print();
-    double start = clock();
-    sort->insertSort();
-    double end = clock();
-    cout << end-start <<endl;
-    sort->print();
+    int n =10;
+    int* arr = _getRandomArr(n);
+    print(arr,n);
+    BSTree* bt = new BSTree(arr,n);
+    bt->LevelTraverse();
+    cout << endl;
+    bt->LevelTraverseNR();
     return 0;
 }
 
