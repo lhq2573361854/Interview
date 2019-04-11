@@ -6,3 +6,21 @@
 
 #IncludeRegexTransform: 
 
+E:/C++/second/BSTree.h
+bits/stdc++.h
+-
+
+E:/C++/second/main.cpp
+bits/stdc++.h
+-
+stdsort.h
+E:/C++/second/stdsort.h
+windows.h
+-
+BSTree.h
+E:/C++/second/BSTree.h
+
+E:/C++/second/stdsort.h
+bits/stdc++.h
+-
+
