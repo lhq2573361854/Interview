@@ -26,16 +26,19 @@ private:
     TreeNode* root;
     TreeNode* _createTree(int*, int );
     TreeNode* _add_Element(TreeNode* ,int);
-    void _preOrder(TreeNode* node);
-    void _inOrder(TreeNode* node);
-    void _postOrder(TreeNode* node);
-    void _preOrderNR(TreeNode* node);
-    void _inOrderNR(TreeNode* node);
-    void _postOrderNR(TreeNode* node);
-    int _getHeight(TreeNode* node);
-    void _LevelTraverse(TreeNode* node);
+    void _preOrder(TreeNode* );
+    void _inOrder(TreeNode* );
+    void _postOrder(TreeNode* );
+    void _preOrderNR(TreeNode* );
+    void _inOrderNR(TreeNode* );
+    void _postOrderNR(TreeNode* );
+    int _getHeight(TreeNode* );
+    void _LevelTraverse(TreeNode* );
     void _PrintNodeAtLevel(TreeNode*,int);
-    void _levelTraverseNR(TreeNode* node);
+    void _levelTraverseNR(TreeNode* );
+    TreeNode* _minimum(TreeNode* );
+    TreeNode* _remove(TreeNode* , int );
+    TreeNode*  _removeMin(TreeNode* );
 public:
     void inOrder();
     void preOrder();
@@ -47,6 +50,8 @@ public:
     TreeNode* createTree(int*, int);
     void LevelTraverse();
     void LevelTraverseNR();
+    void remove( int);
+
 };
 
 //========================PUBLIC================================
@@ -59,7 +64,6 @@ void BSTree::inOrder() {
 void BSTree::postOrder() {
     _postOrder(root);
 }
-
 void BSTree::preOrderNR() {
     _preOrderNR(root);
 }
@@ -72,16 +76,19 @@ void BSTree::postOrderNR() {
 TreeNode* BSTree::createTree(int* arr, int n) {
     _createTree(arr,n);
 }
-int BSTree::getHeight() {
+int  BSTree::getHeight() {
     return _getHeight(root);
 }
-
 void BSTree::LevelTraverse(){
     _LevelTraverse(root);
 }
 void BSTree::LevelTraverseNR(){
     _levelTraverseNR(root);
 }
+void BSTree::remove(int val){
+    _remove(root,val);
+}
+
 //========================PUBLIC================================
 
 
@@ -118,7 +125,6 @@ TreeNode* BSTree::_add_Element(TreeNode *root, int val) {
     return root;
 
 }
-
 /**
  * @param node 根节点
  * 前序遍历以node为根的二分搜索树, 递归算法
@@ -131,13 +137,11 @@ void BSTree::_preOrder(TreeNode* node){
     _preOrder(node->left);
     _preOrder(node->right);
 }
-
 /**
  *
  * @param node 根节点
  * 前序遍历以node为根的二分搜索树, 非递归算法
  */
-
 void BSTree::_preOrderNR(TreeNode* node){
     stack<TreeNode*> s1;
     s1.push(node);
@@ -149,7 +153,6 @@ void BSTree::_preOrderNR(TreeNode* node){
         if(temp->left!=NULL) s1.push(temp->left);
     }
 }
-
 /**
  * @param node
  * 中遍历以node为根的二分搜索树, 递归算法
@@ -166,7 +169,6 @@ void BSTree::_inOrder(TreeNode* node){
  * @param node
  * 中遍历以node为根的二分搜索树, 非递归算法
  */
-
 void BSTree::_inOrderNR(TreeNode* node){
     stack<TreeNode*> s1;
     while(!s1.empty() ||  node!= NULL){
@@ -246,7 +248,6 @@ void BSTree::_PrintNodeAtLevel(TreeNode* T,int level){
     // 右子树的 level - 1 级
     _PrintNodeAtLevel(T->right, level - 1);
 }
-
 /**
  * @param node 根节点
  *  层次遍历以node为根的二分搜索树, 递归算法
@@ -260,7 +261,11 @@ void BSTree::_LevelTraverse( TreeNode* node){
         _PrintNodeAtLevel(node, i);
     }
 }
-
+/**
+ *
+ * @param root 根节点
+ * 层次遍历以node为根的二分搜索树, 非 递归算法
+ */
 void BSTree::_levelTraverseNR(TreeNode* root) {
     if (root == NULL) {
         return;
@@ -279,6 +284,63 @@ void BSTree::_levelTraverseNR(TreeNode* root) {
         }
     }
 }
+/**
+ * @param node 根节点
+ * @return     返回根节点
+ * 删除最小值
+ */
+TreeNode*  BSTree::_removeMin(TreeNode*  node){
+    if(node->left == NULL){
+        TreeNode*  rightNode = node->right;
+        node->right = NULL;
+        return rightNode;
+    }
+    node->left = _removeMin(node->left);
+    return node;
+}
+/**
+ * @param node  节点
+ * @return      返回节点
+ * BST中的最小值的节点
+ */
+TreeNode* BSTree::_minimum(TreeNode* node) {
+    if(node->left == NULL)
+        return node;
+    return _minimum(node->left);
+}
+/**
+ * @param node 根节点
+ * @param val  要删除的值
+ * @return     返回删除的节点的根
+ * 删除元素
+ */
+TreeNode* BSTree::_remove(TreeNode* node, int val) {
+    if(node == NULL)
+        return NULL;
+    if(node->val > val) {
+        node->left = _remove(node->left, val);
+        return node;
+    }else if(node->val < val){
+        node->right = _remove(node->right,val);
+        return node;
+    }else {
+        if(node->left == NULL){
+            TreeNode* rightNode = node->right;
+            node->right = NULL;
+            return rightNode;
+        }
+        if(node->right == NULL){
+            TreeNode* leftNode = node->left;
+            node->left = NULL;
+            return leftNode;
+        }
+        TreeNode* successor = _minimum(node->right);
+        successor->right = _removeMin(node->right);
+        successor->left = node->left;
+        node->left = node->right = NULL;
+        return successor;
+    }
+}
 //========================PRIVATE===============================
 //获取随机数组
 int*  _getRandomArr(int n){
@@ -289,6 +351,14 @@ int*  _getRandomArr(int n){
     }
     return arr;
 }
+//获取数组的最小值
+int getArrMin(int* arr,int n){
+    int min = arr[0];
+    for (int j = n-1; j >= 1 ; --j) {
+        if(min > arr[j]) min= arr[j];
+    }
+    return min;
+}
 //打印数组
 void print(int* arr,int n){
     for (int i = 0; i < n; ++i) {
@@ -296,6 +366,4 @@ void print(int* arr,int n){
     }
     cout << endl;
 }
-
-
 #endif //FIRST_BST_H
