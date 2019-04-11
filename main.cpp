@@ -7,10 +7,12 @@ int main(){
     int n =10;
     int* arr = _getRandomArr(n);
     print(arr,n);
+    int min = getArrMin(arr,n);
     BSTree* bt = new BSTree(arr,n);
-    bt->LevelTraverse();
+    bt->inOrderNR();
     cout << endl;
-    bt->LevelTraverseNR();
+    bt->remove(min);
+    bt->inOrderNR();
     return 0;
 }
 
