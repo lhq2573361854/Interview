@@ -55,36 +55,48 @@ public:
 };
 
 //========================PUBLIC================================
+//用户调用的函数
+//前序遍历
 void BSTree::preOrder() {
     _preOrder(root);
 }
+//中序遍历
 void BSTree::inOrder() {
     _inOrder(root);
 }
+//后序遍历
 void BSTree::postOrder() {
     _postOrder(root);
 }
+//前序非递归
 void BSTree::preOrderNR() {
     _preOrderNR(root);
 }
+//中序非递归
 void BSTree::inOrderNR() {
     _inOrderNR(root);
 }
+//后续非递归
 void BSTree::postOrderNR() {
     _postOrderNR(root);
 }
+//创建一个BST
 TreeNode* BSTree::createTree(int* arr, int n) {
-    _createTree(arr,n);
+    return _createTree(arr,n);
 }
+//获取高度
 int  BSTree::getHeight() {
     return _getHeight(root);
 }
+//层次遍历
 void BSTree::LevelTraverse(){
     _LevelTraverse(root);
 }
+//层次遍历非递归
 void BSTree::LevelTraverseNR(){
     _levelTraverseNR(root);
 }
+//删除一个元素
 void BSTree::remove(int val){
     _remove(root,val);
 }
