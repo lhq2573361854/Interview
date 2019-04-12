@@ -74,7 +74,7 @@ void AVLTree::inOrder(){
  * @param arr 数组
  * @param n   数组大小
  * @return    返回根节点
- * 创建树
+ * 创建一个树
  */
 AVLNode* AVLTree::_createTree(int* arr, int n){
     AVLNode* root = NULL;
