@@ -6,14 +6,14 @@
 #define INDEX2_AVLTREE_H
 #include <bits/stdc++.h>
 using namespace std;
-typedef struct Node3{
+typedef struct Node{
     int key;
     int value;
-    Node3* left;
-    Node3* right;
+    Node* left;
+    Node* right;
     int height;
 
-    Node3(int key, int value){
+    Node(int key, int value){
         this->key = key;
         this->value = value;
         left = NULL;
@@ -47,30 +47,35 @@ public:
     void inOrder();
 };
 //================PUBLIC=========================
+//============用户调用的函数=======================
+//向二叉平衡树 添加一个节点
 AVLNode* AVLTree::AVL_add(int key,int value){
     _AVL_add(root,key,value);
 }
+//向二叉平衡树 删除一个节点
 AVLNode* AVLTree::AVL_remove(int key){
     _AVL_remove(root,key);
 }
+//获取二叉平衡树根节点
 AVLNode* AVLTree::getRoot(){
-
     return root;
 }
+//二叉平衡树前序遍历
 void AVLTree::inOrder(){
     _inOrder(root);
 }
-void AVLTree::_inOrder(AVLNode* node){
-    if(node == NULL)
-        return;
-    _inOrder(node->left);
-    cout << node->key <<" ";
-    _inOrder(node->right);
-}
+
 //================PUBLIC=========================
 
 
 //================PRIVATE========================
+/**
+ *
+ * @param arr 数组
+ * @param n   数组大小
+ * @return    返回根节点
+ * 创建树
+ */
 AVLNode* AVLTree::_createTree(int* arr, int n){
     AVLNode* root = NULL;
     for (int i = 0; i < n; ++i) {
@@ -79,6 +84,12 @@ AVLNode* AVLTree::_createTree(int* arr, int n){
 
     return root;
 }
+/**
+ *
+ * @param node 根节点
+ * @param keys 一个不定长数组存储前序遍历
+ * 中序遍历
+ */
 void AVLTree::_in_Order(AVLNode* node, vector<int> keys){
     if(node == NULL)
         return;
@@ -87,6 +98,12 @@ void AVLTree::_in_Order(AVLNode* node, vector<int> keys){
     keys.push_back(node->key);
     _in_Order(node->right, keys);
 }
+/**
+ *
+ * @param root 根节点
+ * @return 返回为boolean
+ * 判断是否为BST
+ */
 bool AVLTree::_isBST(AVLNode* root){
     vector<int> keys;
     _in_Order(root, keys);
@@ -95,16 +112,31 @@ bool AVLTree::_isBST(AVLNode* root){
             return false;
     return true;
 }
+/**
+ * @param root  一个节点
+ * @return 返回一个int
+ * 返回一个节点的高度
+ */
 int AVLTree::_getHeight(AVLNode* root){
     if(root == NULL)
         return 0;
     return root->height;
 }
+/**
+ * @param root  一个节点
+ * @return 返回一个整形值
+ *  获取平衡因子
+ */
 int AVLTree::_getBalanceFactor(AVLNode* root){
     if(root == nullptr)
         return 0;
     return _getHeight(root->left) - _getHeight(root->right);
 }
+/**
+ * @param node 传入一个节点
+ * @return      返回一个boolean
+ *  返回是否平衡
+ */
 bool AVLTree::_isBalanced(AVLNode* node){
 
     if(node == NULL)
@@ -115,6 +147,11 @@ bool AVLTree::_isBalanced(AVLNode* node){
         return false;
     return _isBalanced(node->left) && _isBalanced(node->right);
 }
+/**
+ * @param y 节点
+ * @return  返回根节点
+ * 右旋转返回根节点
+ */
 AVLNode* AVLTree::_rightRotate(AVLNode* y) {
     AVLNode* x = y->left;
     AVLNode* T3 = x->right;
@@ -124,6 +161,11 @@ AVLNode* AVLTree::_rightRotate(AVLNode* y) {
     x->height=max(_getHeight(x->left),_getHeight(x->right))+1;
     return x;
 }
+/**
+ * @param y 节点
+ * @return  返回根节点
+ * 左旋转返回根节点
+ */
 AVLNode* AVLTree::_leftRotate(AVLNode* y) {
     AVLNode* x = y->right;
     AVLNode* T3 = x->left;
@@ -133,6 +175,13 @@ AVLNode* AVLTree::_leftRotate(AVLNode* y) {
     x->height=max(_getHeight(x->left),_getHeight(x->right))+1;
     return x;
 }
+/**
+ * @param node  添加的根节点
+ * @param key   键
+ * @param value 值
+ * @return      返回根节点
+ * 向一个node添加元素
+ */
 AVLNode* AVLTree::_AVL_add(AVLNode* node, int key, int value){
     if(node == NULL)
         return new AVLNode(key,value);
@@ -166,11 +215,22 @@ AVLNode* AVLTree::_AVL_add(AVLNode* node, int key, int value){
     return node;
 
 }
+/**
+ * @param node 一个节点
+ * @return  返回最小的节点
+ * 获取一个节点的最小值
+ */
 AVLNode* AVLTree::_AVL_minimum(AVLNode* node){
     if(node->left == NULL)
         return node;
     return _AVL_minimum(node->left);
 }
+/**
+ * @param node 根节点
+ * @param key  要删除的键
+ * @return     返回根节点
+ * 删除一个节点
+ */
 AVLNode* AVLTree::_AVL_remove(AVLNode* node, int key){
 
     if( node == NULL )
@@ -248,6 +308,17 @@ AVLNode* AVLTree::_AVL_remove(AVLNode* node, int key){
     }
 
     return retNode;
+}
+/**
+ * @param node  传入一个根节点
+ * 中序遍历
+ */
+void AVLTree::_inOrder(AVLNode* node){
+    if(node == NULL)
+        return;
+    _inOrder(node->left);
+    cout << node->key <<" ";
+    _inOrder(node->right);
 }
 //================PRIVATE========================
 //================================
